@@ -1,0 +1,32 @@
+[
+{
+    "id":"1",
+    "name":"banana",
+    "price":"10.5",
+    "imgUrl":"/imgs/banana.jpeg"
+},
+{
+    "id":"2",
+    "name":"cherry",
+    "price":"4",
+    "imgUrl":"/imgs/cherry.jpeg"
+},
+{
+    "id":"3",
+    "name":"kiwi",
+    "price":"25",
+    "imgUrl":"/imgs/kiwi.jpeg"
+},
+{
+    "id":"4",
+    "name":"orange",
+    "price":"5",
+    "imgUrl":"/imgs/orange.jpeg"
+},
+{
+    "id":"5",
+    "name":"strawberry",
+    "price":"23",
+    "imgUrl":"/imgs/strawberry.png"
+}
+]
