@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReusableList } from '../components/ReusableList';
-import items from '../data/items.json';
 
 type StoreListItemProps = {
     name: string;
     imgUrl: string;
     price: string;
+    id: number;
+    cartQty: number;
+    total: number;
+    [key: string]: any;
+};
+
+type StoreProps = {
+    storeItems: StoreListItemProps[];
+    addCartItem: (id: number) => void;
+    substractCartItem: (id: number) => void;
+    removeCartItem: (id: number) => void;
 };
 
 const StoreListItem: React.FC<StoreListItemProps> = ({ item, ...rest }) => {
-    const { name, imgUrl, price } = item;
-    console.log('props item', item);
-    console.log('props rest', rest);
+    const { name, imgUrl, price, id, cartQty } = item;
+    const { addCartItem, removeCartItem, substractCartItem } = rest;
 
-    const numberOfItemsInCart = 1;
     return (
         <li>
             <div className='store-card'>
@@ -21,21 +29,23 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ item, ...rest }) => {
                     <img src={imgUrl} alt={name} />
                 </div>
                 <div className='store-card-body'>
-                    <span>{name}</span>
-                    <span>{price}</span>
+                    <span>{name.toUpperCase()}</span>
+                    <span>{price}$</span>
                 </div>
                 <div className='store-card-buttons'>
-                    {numberOfItemsInCart ? (
+                    {cartQty ? (
                         <>
-                            <button>-</button>
-                            <span>1 in cart</span>
-                            <button>+</button>
+                            <button onClick={() => substractCartItem(id)}>-</button>
+                            <span>{cartQty} in cart</span>
+                            <button onClick={() => addCartItem(id)}>+</button>
                             <div className='remove-item-btn-block'>
-                                <button>Remove Item</button>
+                                <button onClick={() => removeCartItem(id)}>
+                                    Remove Item
+                                </button>
                             </div>
                         </>
                     ) : (
-                        <button>Add to Cart</button>
+                        <button onClick={() => addCartItem(id)}>Add to Cart</button>
                     )}
                 </div>
             </div>
@@ -43,21 +53,28 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ item, ...rest }) => {
     );
 };
 
-export default function Store() {
-    console.log('items', items);
+const Store: React.FC<StoreProps> = ({
+    storeItems,
+    addCartItem,
+    substractCartItem,
+    removeCartItem,
+}) => {
     return (
         <>
             <div className='page-header'>Store</div>
             <div className='store-container'>
                 <div className='store-list-wrapper'>
                     <ReusableList
-                        items={items}
+                        items={storeItems}
                         componentToRender={StoreListItem}
-                        newProp='new prop'
-                        newProp2='new pro2p'
+                        addCartItem={addCartItem}
+                        substractCartItem={substractCartItem}
+                        removeCartItem={removeCartItem}
                     />
                 </div>
             </div>
         </>
     );
-}
+};
+
+export default Store;
