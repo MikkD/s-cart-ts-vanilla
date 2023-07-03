@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext, useMemo } from 'react';
 import { NAV_LINKS } from './utils';
 import { NavLink } from 'react-router-dom';
 import ShoppingCart from './ShoppingCart';
+import { CartContext } from '../App';
 
-function NavBar({ cartItems, totalNumberCartItems }) {
+function NavBar() {
     const [isShoppingCartActive, setIsShoppingCartActive] = useState<boolean>(false);
+    const { storeItems } = useContext(CartContext);
+
+    const totalNumberCartItems = useMemo(
+        () => storeItems.reduce((acc, { cartQty }) => acc + cartQty, 0),
+        [storeItems]
+    );
 
     return (
         <nav className='nav-menu'>
@@ -33,7 +40,6 @@ function NavBar({ cartItems, totalNumberCartItems }) {
                 <div className='shopping-cart-counter'>{totalNumberCartItems}</div>
             </div>
             <ShoppingCart
-                cartItems={cartItems}
                 isActive={isShoppingCartActive}
                 setIsActive={setIsShoppingCartActive}
             />

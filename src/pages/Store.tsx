@@ -1,26 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { ReusableList } from '../components/ReusableList';
+import { StoreListItemProps } from '../components/types';
+import { CartContext } from '../App';
 
-type StoreListItemProps = {
-    name: string;
-    imgUrl: string;
-    price: string;
-    id: number;
-    cartQty: number;
-    total: number;
-    [key: string]: any;
-};
-
-type StoreProps = {
-    storeItems: StoreListItemProps[];
-    addCartItem: (id: number) => void;
-    substractCartItem: (id: number) => void;
-    removeCartItem: (id: number) => void;
-};
-
-const StoreListItem: React.FC<StoreListItemProps> = ({ item, ...rest }) => {
+const StoreListItem: React.FC<StoreListItemProps> = ({ item }) => {
     const { name, imgUrl, price, id, cartQty } = item;
-    const { addCartItem, removeCartItem, substractCartItem } = rest;
+    const { addCartItem, removeCartItem, substractCartItem } = useContext(CartContext);
 
     return (
         <li>
@@ -53,24 +38,14 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ item, ...rest }) => {
     );
 };
 
-const Store: React.FC<StoreProps> = ({
-    storeItems,
-    addCartItem,
-    substractCartItem,
-    removeCartItem,
-}) => {
+const Store: React.FC = () => {
+    const { storeItems } = useContext(CartContext);
     return (
         <>
             <div className='page-header'>Store</div>
             <div className='store-container'>
                 <div className='store-list-wrapper'>
-                    <ReusableList
-                        items={storeItems}
-                        componentToRender={StoreListItem}
-                        addCartItem={addCartItem}
-                        substractCartItem={substractCartItem}
-                        removeCartItem={removeCartItem}
-                    />
+                    <ReusableList items={storeItems} componentToRender={StoreListItem} />
                 </div>
             </div>
         </>

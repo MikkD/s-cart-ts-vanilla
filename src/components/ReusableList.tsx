@@ -2,6 +2,7 @@
 type ReusableListProps = {
     items: any[];
     componentToRender: (item: any, index: number) => React.ReactNode;
+    [key: string]: any;
 };
 
 export const ReusableList: React.FC<ReusableListProps> = ({

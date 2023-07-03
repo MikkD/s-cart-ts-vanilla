@@ -1,29 +1,17 @@
+import { useMemo, useContext } from 'react';
 import { ReusableList } from './ReusableList';
+import { StoreListItemProps } from './types';
+import { CartContext } from '../App';
 
 //ShoppingCartListItem
-type ItemProps = {
-    name: string;
-    price: string;
-    imgUrl: string;
-    cartQty: number;
-    total: number;
-};
-
 type ShoppingCartListItemProps = {
-    item: ItemProps;
+    item: StoreListItemProps;
     [key: string]: any;
 };
 
-type ShoppingCartProps = {
-    cartItems: ItemProps[];
-    isActive: boolean;
-    setIsActive: (state: boolean) => void;
-};
-const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({
-    item,
-    ...restProps
-}) => {
-    const { name, imgUrl, price, cartQty, total } = item;
+const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => {
+    const { name, imgUrl, price, cartQty, total, id } = item;
+    const { removeCartItem } = useContext(CartContext);
 
     return (
         <li>
@@ -41,18 +29,29 @@ const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({
                     </div>
                     <div className='total'>total: {total}$</div>
                 </div>
-                <button>X</button>
+                <button onClick={() => removeCartItem(id)}>X</button>
             </div>
         </li>
     );
 };
 
-const ShoppingCart: React.FC<ShoppingCartProps> = ({
-    cartItems,
-    isActive,
-    setIsActive,
-}) => {
-    const grandTotal = cartItems.reduce((acc, { total }) => acc + total, 0);
+// Shopping Cart
+type ShoppingCartProps = {
+    isActive: boolean;
+    setIsActive: (state: boolean) => void;
+};
+
+const ShoppingCart: React.FC<ShoppingCartProps> = ({ isActive, setIsActive }) => {
+    const { storeItems } = useContext(CartContext);
+
+    const grandTotal = useMemo(
+        () => storeItems.reduce((acc, { total }) => acc + total, 0),
+        [storeItems]
+    );
+    const cartItems = useMemo(
+        () => storeItems.filter((storeItem) => storeItem.cartQty),
+        [storeItems]
+    );
     return (
         <div className={`shopping-cart-container ${isActive ? 'active' : ''}`}>
             <div className='shopping-cart-header'>
