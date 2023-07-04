@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ReusableList } from '../components/ReusableList';
-import { StoreListItemProps } from '../components/types';
-import { CartContext } from '../App';
+import { StoreListItemProps } from '../types/types';
+import { CartContext } from '../context/ShoppingCartContext';
 
 const StoreListItem: React.FC<StoreListItemProps> = ({ item }) => {
     const { name, imgUrl, price, id, cartQty } = item;

@@ -1,7 +1,7 @@
 import { useMemo, useContext } from 'react';
 import { ReusableList } from './ReusableList';
-import { StoreListItemProps } from './types';
-import { CartContext } from '../App';
+import { StoreListItemProps } from '../types/types';
+import { CartContext } from '../context/ShoppingCartContext';
 
 //ShoppingCartListItem
 type ShoppingCartListItemProps = {

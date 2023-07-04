@@ -1,8 +1,8 @@
 import { useState, useContext, useMemo } from 'react';
 import { NAV_LINKS } from './utils';
 import { NavLink } from 'react-router-dom';
+import { CartContext } from '../context/ShoppingCartContext';
 import ShoppingCart from './ShoppingCart';
-import { CartContext } from '../App';
 
 function NavBar() {
     const [isShoppingCartActive, setIsShoppingCartActive] = useState<boolean>(false);
