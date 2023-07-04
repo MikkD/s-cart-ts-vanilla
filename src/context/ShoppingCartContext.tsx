@@ -81,6 +81,7 @@ export const ShoppingCartContext = ({ children }: ShoppingCartContextType) => {
         });
     };
 
+    // test
     return (
         <CartContext.Provider
             value={{ storeItems, removeCartItem, addCartItem, substractCartItem }}>
