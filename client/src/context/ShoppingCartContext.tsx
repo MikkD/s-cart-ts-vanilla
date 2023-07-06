@@ -1,6 +1,6 @@
 import { useState, createContext, ReactNode } from 'react';
 import { StoreListItemProps } from '../types/types';
-import defaultStoreItems from '../data/items.json';
+// import defaultStoreItems from '../data/items.json';
 import { CartContextType, ShoppingCartContextType } from '../types/types';
 
 const defaultCartContext = {
@@ -25,7 +25,7 @@ const defaultCartContext = {
 export const CartContext = createContext<CartContextType>(defaultCartContext);
 
 export const ShoppingCartContext = ({ children }: ShoppingCartContextType) => {
-    const [storeItems, setStoreItems] = useState<StoreListItemProps[]>(defaultStoreItems);
+    const [storeItems, setStoreItems] = useState<StoreListItemProps[]>([]);
 
     const addCartItem = (id: number) => {
         setStoreItems((prevStoreItems) => {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ReusableList } from '../components/ReusableList';
 import { StoreListItemProps } from '../types/types';
 import { CartContext } from '../context/ShoppingCartContext';
@@ -40,6 +40,13 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ item }) => {
 
 const Store: React.FC = () => {
     const { storeItems } = useContext(CartContext);
+
+    useEffect(() => {
+        fetch('http://localhost:3020/store')
+            .then((data) => data.json())
+            .then((storeItems) => console.log(storeItems));
+    }, []);
+
     return (
         <>
             <div className='page-header'>Store</div>
