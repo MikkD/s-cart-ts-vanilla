@@ -1,17 +1,22 @@
 import { useMemo, useContext } from 'react';
 import { ReusableList } from './ReusableList';
-import { StoreListItemProps } from '../types/types';
-import { CartContext } from '../context/ShoppingCartContext';
-
-//ShoppingCartListItem
-type ShoppingCartListItemProps = {
-    item: StoreListItemProps;
-    [key: string]: any;
-};
+import {
+    CartContextType,
+    ShoppingCartListItemProps,
+    ShoppingCartProps,
+} from '../types/types';
+import { CartContext } from '../context/ShoppingCart';
 
 const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => {
-    const { name, imgUrl, price, cartQty, total, id } = item;
-    const { removeCartItem } = useContext(CartContext);
+    const { name, imgUrl, price, cartQty, total } = item;
+
+    const cartContext = useContext<CartContextType | null>(CartContext);
+
+    if (!cartContext) {
+        throw new Error('cartContext is not provided');
+    }
+
+    const { dispatch, SHOPPING_CART_TYPES } = cartContext;
 
     return (
         <li>
@@ -29,29 +34,36 @@ const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => 
                     </div>
                     <div className='total'>total: {total}$</div>
                 </div>
-                <button onClick={() => removeCartItem(id)}>X</button>
+                <button
+                    onClick={() =>
+                        dispatch({
+                            type: SHOPPING_CART_TYPES.REMOVE_FROM_CART,
+                            payload: item,
+                        })
+                    }>
+                    X
+                </button>
             </div>
         </li>
     );
 };
 
-// Shopping Cart
-type ShoppingCartProps = {
-    isActive: boolean;
-    setIsActive: (state: boolean) => void;
-};
-
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isActive, setIsActive }) => {
-    const { storeItems } = useContext(CartContext);
+    const cartContext = useContext<CartContextType | null>(CartContext);
+
+    if (!cartContext) {
+        throw new Error('cartContext is not provided');
+    }
+
+    const {
+        state: { cartItems },
+    } = cartContext;
 
     const grandTotal = useMemo(
-        () => storeItems.reduce((acc, { total }) => acc + total, 0),
-        [storeItems]
+        () => cartItems.reduce((acc, { total }) => acc + total, 0),
+        [cartItems]
     );
-    const cartItems = useMemo(
-        () => storeItems.filter((storeItem) => storeItem.cartQty),
-        [storeItems]
-    );
+
     return (
         <div className={`shopping-cart-container ${isActive ? 'active' : ''}`}>
             <div className='shopping-cart-header'>

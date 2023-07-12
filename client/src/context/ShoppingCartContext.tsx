@@ -1,6 +1,5 @@
-import { useState, createContext, ReactNode } from 'react';
+import { useState, createContext, ReactNode, useReducer } from 'react';
 import { StoreListItemProps } from '../types/types';
-// import defaultStoreItems from '../data/items.json';
 import { CartContextType, ShoppingCartContextType } from '../types/types';
 
 const defaultCartContext = {
@@ -19,6 +18,9 @@ const defaultCartContext = {
         console.warn(
             `substractCartItem was called with id ${id}, but the context provider is not set.`
         );
+    },
+    setStoreItems: (items: StoreListItemProps[]) => {
+        console.warn(`items have been added`);
     },
 };
 
@@ -84,7 +86,13 @@ export const ShoppingCartContext = ({ children }: ShoppingCartContextType) => {
     // test
     return (
         <CartContext.Provider
-            value={{ storeItems, removeCartItem, addCartItem, substractCartItem }}>
+            value={{
+                storeItems,
+                setStoreItems,
+                removeCartItem,
+                addCartItem,
+                substractCartItem,
+            }}>
             {children}
         </CartContext.Provider>
     );
