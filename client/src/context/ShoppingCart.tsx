@@ -1,11 +1,5 @@
 import { useReducer, createContext } from 'react';
-import {
-    CartContextType,
-    CartItemType,
-    Action,
-    State,
-    SHOPPING_CART_TYPES,
-} from '../types/types';
+import { CartContextType, Action, State, SHOPPING_CART_TYPES } from '../types/types';
 
 const INITIAL_STATE = {
     cartItems: [],

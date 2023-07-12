@@ -1,23 +1,29 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { ReusableList } from '../components/ReusableList';
-import { StoreItemType } from '../types/types';
-import { CartContext } from '../context/ShoppingCart';
-import { ProductsContext } from '../context/Products';
+import { CartItemType, IStoreListItemType, ShoppingCartActionTypes } from '../types/types';
+import { useCartContext } from '../hooks/useCartContext';
+import { useProductsContext } from '../hooks/useProductsContext';
+import { useProductsFetch } from '../hooks/useProductsFetch';
 
-const StoreListItem: React.FC<StoreItemType> = ({ item }) => {
-    // console.log('🚀 ~ file: Store.tsx:8 ~ item:', item);
-    const { name, imgUrl, price, id, cartQty } = item;
+const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
+    const { name, imgUrl, price, id } = item;
 
-    const { state, dispatch, SHOPPING_CART_TYPES } = useContext(CartContext);
-    // console.log('🚀 ~ file: Store.tsx:13 ~ SHOPPING_CART_TYPES:', SHOPPING_CART_TYPES);
-    // console.log('🚀 ~ file: Store.tsx:13 ~ dispatch:', dispatch);
-    console.log('🚀 ~ file: Store.tsx:13 ~ state:', state);
-    const { cartItems } = state;
-    console.log('🚀 ~ file: Store.tsx:16 ~ cartItems:', cartItems);
+    const {
+        state: { cartItems },
+        dispatch,
+        SHOPPING_CART_TYPES,
+    } = useCartContext();
+
     const itemInCart = cartItems.find(
-        (cartItem) => cartItem.id === id && cartItem.cartQty > 0
+        (cartItem: CartItemType) => cartItem.id === id && cartItem?.cartQty > 0
     );
 
+    const dispatchCartAction = (cartActionType: ShoppingCartActionTypes) => {
+        dispatch({
+            type: cartActionType,
+            payload: item,
+        });
+    };
     return (
         <li>
             <div className='store-card'>
@@ -33,43 +39,26 @@ const StoreListItem: React.FC<StoreItemType> = ({ item }) => {
                         <>
                             <button
                                 onClick={() =>
-                                    dispatch({
-                                        type: SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART,
-                                        payload: item,
-                                    })
+                                    dispatchCartAction(SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART)
                                 }>
                                 -
                             </button>
                             <span>{itemInCart?.cartQty} in cart</span>
                             <button
-                                onClick={() =>
-                                    dispatch({
-                                        type: SHOPPING_CART_TYPES.ADD_TO_CART,
-                                        payload: item,
-                                    })
-                                }>
+                                onClick={() => dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)}>
                                 +
                             </button>
                             <div className='remove-item-btn-block'>
                                 <button
                                     onClick={() =>
-                                        dispatch({
-                                            type: SHOPPING_CART_TYPES.REMOVE_FROM_CART,
-                                            payload: item,
-                                        })
+                                        dispatchCartAction(SHOPPING_CART_TYPES.REMOVE_FROM_CART)
                                     }>
                                     Remove Item
                                 </button>
                             </div>
                         </>
                     ) : (
-                        <button
-                            onClick={() =>
-                                dispatch({
-                                    type: SHOPPING_CART_TYPES.ADD_TO_CART,
-                                    payload: item,
-                                })
-                            }>
+                        <button onClick={() => dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)}>
                             Add to Cart
                         </button>
                     )}
@@ -80,32 +69,13 @@ const StoreListItem: React.FC<StoreItemType> = ({ item }) => {
 };
 
 const Store: React.FC = () => {
-    const { state, dispatch, PRODUCTS_ACTION_TYPES } = useContext(ProductsContext);
-    const { products } = state;
-
-    useEffect(() => {
-        let isMounted = true;
-        dispatch({
-            type: PRODUCTS_ACTION_TYPES.LOADING,
-        });
-        fetch('http://localhost:3020/store')
-            .then((data) => data.json())
-            .then((products) => {
-                if (isMounted) {
-                    dispatch({
-                        type: PRODUCTS_ACTION_TYPES.SUCCESS,
-                        payload: products,
-                    });
-                }
-            })
-            .catch((err) => {
-                dispatch({ type: PRODUCTS_ACTION_TYPES.ERROR });
-            });
-
-        return () => {
-            isMounted = false;
-        };
-    }, []);
+    const {
+        state: { products },
+        dispatch,
+        PRODUCTS_ACTION_TYPES,
+    } = useProductsContext();
+    const url = 'http://localhost:3020/store';
+    useProductsFetch(dispatch, PRODUCTS_ACTION_TYPES, url);
 
     return (
         <>

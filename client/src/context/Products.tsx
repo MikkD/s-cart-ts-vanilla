@@ -1,28 +1,11 @@
 import { useReducer, createContext, ReactNode, Dispatch } from 'react';
-
-type productType = {
-    name: string;
-    imgUrl: string;
-    price: number;
-    id: number;
-};
-
-type storePageActionType = {
-    type: string;
-    payload?: productType[] | boolean | object;
-};
-
-type storePageStateType = {
-    products: productType[];
-    isLoading: boolean;
-    isError: boolean;
-};
-
-export const PRODUCTS_ACTION_TYPES = {
-    LOADING: 'LOADING',
-    SUCCESS: 'SUCCESS',
-    ERROR: 'ERROR',
-};
+import {
+    productType,
+    storePageActionType,
+    storePageStateType,
+    PRODUCTS_ACTION_TYPES,
+    ProductsContextProviderType,
+} from '../types/types';
 
 const INITIAL_STATE = {
     products: [],
@@ -52,12 +35,6 @@ const storePage = (state: storePageStateType, action: storePageActionType) => {
         default:
             return state;
     }
-};
-
-type ProductsContextProviderType = {
-    state: storePageStateType;
-    dispatch: Dispatch<storePageActionType>;
-    PRODUCTS_ACTION_TYPES: typeof PRODUCTS_ACTION_TYPES;
 };
 
 export const ProductsContext = createContext<ProductsContextProviderType | null>(null);
