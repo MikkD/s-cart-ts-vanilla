@@ -7,26 +7,25 @@ export const useProductsFetch = (
     url: string
 ): void => {
     useEffect(() => {
-        let isMounted = true;
+        const controller = new AbortController();
         dispatch({
             type: PRODUCTS_ACTION_TYPES.LOADING,
         });
-        fetch(url)
+
+        fetch(url, {
+            signal: controller.signal,
+        })
             .then((data) => data.json())
             .then((products) => {
-                if (isMounted) {
-                    dispatch({
-                        type: PRODUCTS_ACTION_TYPES.SUCCESS,
-                        payload: products,
-                    });
-                }
+                dispatch({
+                    type: PRODUCTS_ACTION_TYPES.SUCCESS,
+                    payload: products,
+                });
             })
             .catch((err) => {
                 dispatch({ type: PRODUCTS_ACTION_TYPES.ERROR });
             });
 
-        return () => {
-            isMounted = false;
-        };
+        return () => controller.abort();
     }, []);
 };

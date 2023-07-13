@@ -1,9 +1,14 @@
 import React from 'react';
 import { ReusableList } from '../components/ReusableList';
-import { CartItemType, IStoreListItemType, ShoppingCartActionTypes } from '../types/types';
+import {
+    CartItemType,
+    IStoreListItemType,
+    ShoppingCartActionTypes,
+} from '../types/types';
 import { useCartContext } from '../hooks/useCartContext';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useProductsFetch } from '../hooks/useProductsFetch';
+import { url } from '../utils/utils';
 
 const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
     const { name, imgUrl, price, id } = item;
@@ -39,26 +44,35 @@ const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
                         <>
                             <button
                                 onClick={() =>
-                                    dispatchCartAction(SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART)
+                                    dispatchCartAction(
+                                        SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART
+                                    )
                                 }>
                                 -
                             </button>
                             <span>{itemInCart?.cartQty} in cart</span>
                             <button
-                                onClick={() => dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)}>
+                                onClick={() =>
+                                    dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)
+                                }>
                                 +
                             </button>
                             <div className='remove-item-btn-block'>
                                 <button
                                     onClick={() =>
-                                        dispatchCartAction(SHOPPING_CART_TYPES.REMOVE_FROM_CART)
+                                        dispatchCartAction(
+                                            SHOPPING_CART_TYPES.REMOVE_FROM_CART
+                                        )
                                     }>
                                     Remove Item
                                 </button>
                             </div>
                         </>
                     ) : (
-                        <button onClick={() => dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)}>
+                        <button
+                            onClick={() =>
+                                dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)
+                            }>
                             Add to Cart
                         </button>
                     )}
@@ -74,7 +88,7 @@ const Store: React.FC = () => {
         dispatch,
         PRODUCTS_ACTION_TYPES,
     } = useProductsContext();
-    const url = 'http://localhost:3020/store';
+
     useProductsFetch(dispatch, PRODUCTS_ACTION_TYPES, url);
 
     return (

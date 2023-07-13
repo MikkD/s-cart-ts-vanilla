@@ -1,19 +1,13 @@
-import { useState, useContext, useMemo } from 'react';
-import { NAV_LINKS, ShoppingCartIcon } from './utils';
+import { useState, useMemo } from 'react';
+import { NAV_LINKS, ShoppingCartIcon } from '../utils/utils';
 import { NavLink } from 'react-router-dom';
-import { CartContext } from '../context/ShoppingCart';
 import ShoppingCart from './ShoppingCart';
-import { CartContextType } from '../types/types';
+import { useCartContext } from '../hooks/useCartContext';
 
 const NavBar: React.FC = () => {
     const [isShoppingCartActive, setIsShoppingCartActive] = useState(false);
 
-    const cartContext = useContext<CartContextType | null>(CartContext);
-
-    if (!cartContext) {
-        throw new Error('cartContext is not provided');
-    }
-
+    const cartContext = useCartContext();
     const {
         state: { cartItems },
     } = cartContext;
@@ -30,9 +24,8 @@ const NavBar: React.FC = () => {
             <div className='nav-menu-links'>
                 <ul>
                     {NAV_LINKS.map(({ text, path, id }) => (
-                        <li>
+                        <li key={id}>
                             <NavLink
-                                key={id}
                                 className={({ isActive }) => (isActive ? 'active' : '')}
                                 to={path}>
                                 {text}

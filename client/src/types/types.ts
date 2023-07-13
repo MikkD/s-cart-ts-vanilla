@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export const SHOPPING_CART_TYPES = {
     ADD_TO_CART: 'ADD_TO_CART',
     SUBSTRACT_FROM_CART: 'SUBSTRACT_FROM_CART',
@@ -49,16 +51,8 @@ export type UseProductsFetchType = {
     PRODUCTS_ACTION_TYPES: typeof PRODUCTS_ACTION_TYPES;
 };
 
-export type CartContextType = {
-    state: {
-        cartItems: CartItemType[] | [];
-    };
-    dispatch: React.Dispatch<Action>;
-    SHOPPING_CART_TYPES: typeof SHOPPING_CART_TYPES;
-};
-
 // CART
-export type ShoppingCartContextType = {
+export type CartProviderType = {
     children: ReactNode;
 };
 
@@ -106,4 +100,10 @@ export type ReusableListProps = {
     items: any[];
     componentToRender: (item: any, index: number) => React.ReactNode;
     [key: string]: any;
+};
+
+export type NavLinkType = {
+    text: string;
+    path: string;
+    id: number;
 };

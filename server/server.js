@@ -27,7 +27,8 @@ app.get('/store', (req, res) => {
     if (!storeItems) {
         return res.status(500).send('Store items not loaded yet');
     }
-    res.json(storeItems);
+    setTimeout(() => res.json(storeItems), 500)
+
 });
 
 app.listen(port, () => {
