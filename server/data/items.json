@@ -18,15 +18,166 @@
     "imgUrl":"/imgs/kiwi.jpeg"
 },
 {
-    "id":4,
-    "name":"orange",
-    "price":5,
-    "imgUrl":"/imgs/orange.jpeg"
-},
-{
     "id":5,
     "name":"strawberry",
     "price":2,
     "imgUrl":"/imgs/strawberry.png"
-}
+},
+{
+    "id": 6,
+    "name": "burger",
+    "price": 15,
+    "imgUrl":"/imgs/burger.jpg"
+  },
+  {
+    "id": 7,
+    "name": "burger2",
+    "price": 20,
+    "imgUrl":"/imgs/burger2.jpg"
+  },
+  {
+    "id": 8,
+    "name": "cake",
+    "price": 30,
+    "imgUrl":"/imgs/cake.jpg"
+  },
+  {
+    "id": 9,
+    "name": "cherry",
+    "price": 25,
+    "imgUrl":"/imgs/cherry.jpeg"
+  },
+  {
+    "id": 10,
+    "name": "coffee",
+    "price": 40,
+    "imgUrl":"/imgs/coffee.jpg"
+  },
+  {
+    "id":11,
+    "name":"coke",
+    "price":15,
+    "imgUrl":"/imgs/coke.jpg"
+},
+{
+    "id":12,
+    "name":"collogne",
+    "price":43,
+    "imgUrl":"/imgs/collogne.jpg"
+},
+{
+    "id":13,
+    "name":"cream",
+    "price":2,
+    "imgUrl":"/imgs/cream.jpg"
+},
+{
+    "id":14,
+    "name":"orange2",
+    "price":5,
+    "imgUrl":"/imgs/orange2.jpeg"
+},
+{
+    "id":15,
+    "name":"donuts",
+    "price":2,
+    "imgUrl":"/imgs/donuts.jpg"
+},
+{
+    "id": 16,
+    "name": "egg",
+    "price": 15,
+    "imgUrl":"/imgs/egg.jpg"
+  },
+  {
+    "id": 17,
+    "name": "eggs",
+    "price": 20,
+    "imgUrl":"/imgs/eggs.jpg"
+  },
+  {
+    "id": 18,
+    "name": "flower",
+    "price": 30,
+    "imgUrl":"/imgs/flower.jpg"
+  },
+  {
+    "id": 19,
+    "name": "headphones",
+    "price": 215,
+    "imgUrl":"/imgs/headphones.jpg"
+  },
+  {
+    "id": 20,
+    "name": "ice-cream",
+    "price": 40,
+    "imgUrl":"/imgs/ice-cream.jpg"
+  },
+  {
+    "id":22,
+    "name":"lemon",
+    "price":15,
+    "imgUrl":"/imgs/lemon.jpg"
+},
+{
+    "id":23,
+    "name":"macaron",
+    "price":43,
+    "imgUrl":"/imgs/macaron.jpg"
+},
+{
+    "id":24,
+    "name":"pizza",
+    "price":2,
+    "imgUrl":"/imgs/pizza.jpg"
+},
+{
+    "id":25,
+    "name":"shoes",
+    "price":52,
+    "imgUrl":"/imgs/shoes.jpg"
+},
+{
+    "id":26,
+    "name":"sneakers",
+    "price":112,
+    "imgUrl":"/imgs/sneakers.jpg"
+},
+{
+    "id": 27,
+    "name": "soup",
+    "price": 125,
+    "imgUrl":"/imgs/soup.jpg"
+  },
+  {
+    "id": 28,
+    "name": "eggs",
+    "price": 20,
+    "imgUrl":"/imgs/eggs.jpg"
+  },
+  {
+    "id": 29,
+    "name": "sweet",
+    "price": 30,
+    "imgUrl":"/imgs/sweet.jpg"
+  },
+  {
+    "id": 30,
+    "name": "waffle",
+    "price": 15,
+    "imgUrl":"/imgs/waffle.jpg"
+  },
+  {
+    "id": 31,
+    "name": "watches",
+    "price": 45,
+    "imgUrl":"/imgs/watches.jpg"
+  },
+  {
+    "id": 33,
+    "name": "wine",
+    "price": 20,
+    "imgUrl":"/imgs/wine.jpg"
+  }
 ]
+

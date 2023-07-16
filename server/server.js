@@ -27,7 +27,7 @@ app.get('/store', (req, res) => {
     if (!storeItems) {
         return res.status(500).send('Store items not loaded yet');
     }
-    setTimeout(() => res.json(storeItems), 500)
+    setTimeout(() => res.json(storeItems), 100)
 
 });
 

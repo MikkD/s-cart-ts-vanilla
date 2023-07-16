@@ -6,7 +6,7 @@ export const ReusableList: React.FC<ReusableListProps> = ({
     ...props
 }) => {
     if (!items.length) return <h4>...Empty</h4>;
-
+    console.log('...props', props);
     return (
         <ul>
             {items.map((item, idx) => (

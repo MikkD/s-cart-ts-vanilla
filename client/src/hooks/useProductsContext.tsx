@@ -3,7 +3,7 @@ import { ProductsContext } from '../context/Products';
 import { ProductsContextType } from '../types/types';
 
 export const useProductsContext = () => {
-    const productContext = useContext<ProductsContextType>(ProductsContext);
+    const productContext = useContext<ProductsContextType | null>(ProductsContext);
     if (!productContext) {
         throw new Error('productContext is not provided');
     }

@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { UseProductsFetchType } from '../types/types';
+import { useProductsContext } from './useProductsContext';
+import { url } from '../utils/utils';
 
-export const useProductsFetch = (
-    dispatch: UseProductsFetchType['dispatch'],
-    PRODUCTS_ACTION_TYPES: UseProductsFetchType['PRODUCTS_ACTION_TYPES'],
-    url: string
-): void => {
+export const useProductsFetch = (): void => {
+    const { dispatch, PRODUCTS_ACTION_TYPES } = useProductsContext();
+
     useEffect(() => {
         const controller = new AbortController();
         dispatch({

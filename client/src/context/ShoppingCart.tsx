@@ -1,9 +1,9 @@
-import { useReducer, createContext } from 'react';
+import { useReducer, createContext, useMemo } from 'react';
 import {
     CartContextType,
     Action,
     State,
-    SHOPPING_CART_TYPES,
+    SHOPPING_CART_REDUCER_ACTIONS,
     CartProviderType,
     ProductType,
     CartItemType,
@@ -52,17 +52,17 @@ const substractItemFromCart = (cartItems: CartItemType[], item: ProductType) => 
 
 const shoppingCartReducer = (state: State, { type, payload }: Action) => {
     switch (type) {
-        case SHOPPING_CART_TYPES.ADD_TO_CART:
+        case SHOPPING_CART_REDUCER_ACTIONS.ADD_TO_CART:
             return {
                 ...state,
                 cartItems: addItemToCart(state.cartItems, payload),
             };
-        case SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART:
+        case SHOPPING_CART_REDUCER_ACTIONS.SUBSTRACT_FROM_CART:
             return {
                 ...state,
                 cartItems: substractItemFromCart(state.cartItems, payload),
             };
-        case SHOPPING_CART_TYPES.REMOVE_FROM_CART:
+        case SHOPPING_CART_REDUCER_ACTIONS.REMOVE_FROM_CART:
             return {
                 ...state,
                 cartItems: state.cartItems.filter(
@@ -78,8 +78,19 @@ export const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: CartProviderType) => {
     const [state, dispatch] = useReducer(shoppingCartReducer, INITIAL_STATE);
+    const SHOPPING_CART_REDUCERS_ACTIONS = useMemo(
+        () => SHOPPING_CART_REDUCER_ACTIONS,
+        []
+    );
+
+    const grandTotal = useMemo(
+        () => state.cartItems.reduce((acc, { total }) => acc + total, 0),
+        [state.cartItems]
+    );
+
     return (
-        <CartContext.Provider value={{ state, dispatch, SHOPPING_CART_TYPES }}>
+        <CartContext.Provider
+            value={{ state, dispatch, SHOPPING_CART_REDUCERS_ACTIONS, grandTotal }}>
             {children}
         </CartContext.Provider>
     );

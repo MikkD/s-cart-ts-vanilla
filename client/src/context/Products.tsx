@@ -1,10 +1,9 @@
-import { useReducer, createContext, ReactNode, Dispatch } from 'react';
+import { useReducer, createContext, ReactNode } from 'react';
 import {
-    productType,
-    storePageActionType,
-    storePageStateType,
+    ProductType,
+    StorePageActionType,
     PRODUCTS_ACTION_TYPES,
-    ProductsContextProviderType,
+    ProductsContextType,
 } from '../types/types';
 
 const INITIAL_STATE = {
@@ -13,7 +12,13 @@ const INITIAL_STATE = {
     isError: false,
 };
 
-const storePage = (state: storePageStateType, action: storePageActionType) => {
+type storeReducerType = {
+    products: ProductType[];
+    isLoading: boolean;
+    isError: boolean;
+};
+
+const storePage = (state: storeReducerType, action: StorePageActionType) => {
     switch (action.type) {
         case PRODUCTS_ACTION_TYPES.LOADING:
             return {
@@ -23,7 +28,7 @@ const storePage = (state: storePageStateType, action: storePageActionType) => {
         case PRODUCTS_ACTION_TYPES.SUCCESS:
             return {
                 ...state,
-                products: action.payload as productType[],
+                products: action.payload as ProductType[],
                 isLoading: false,
             };
         case PRODUCTS_ACTION_TYPES.ERROR:
@@ -37,7 +42,7 @@ const storePage = (state: storePageStateType, action: storePageActionType) => {
     }
 };
 
-export const ProductsContext = createContext<ProductsContextProviderType | null>(null);
+export const ProductsContext = createContext<ProductsContextType | null>(null);
 
 type ProductsProviderProps = {
     children: ReactNode;

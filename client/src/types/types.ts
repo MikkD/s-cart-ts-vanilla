@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export const SHOPPING_CART_TYPES = {
+export const SHOPPING_CART_REDUCER_ACTIONS = {
     ADD_TO_CART: 'ADD_TO_CART',
     SUBSTRACT_FROM_CART: 'SUBSTRACT_FROM_CART',
     REMOVE_FROM_CART: 'REMOVE_FROM_CART',
@@ -19,9 +19,6 @@ export type ProductType = {
     price: number;
     id: number;
 };
-export type IStoreListItemType = {
-    item: ProductType;
-};
 
 export type StoreType = {
     storeItems: ProductType[];
@@ -31,7 +28,7 @@ export type StoreType = {
 export type StoreProductstActionTypes =
     (typeof PRODUCTS_ACTION_TYPES)[keyof typeof PRODUCTS_ACTION_TYPES];
 
-export type storePageActionType = {
+export type StorePageActionType = {
     type: StoreProductstActionTypes;
     payload?: ProductType[] | boolean | object;
 };
@@ -42,12 +39,12 @@ export type ProductsContextType = {
         isLoading: boolean;
         isError: boolean;
     };
-    dispatch: React.Dispatch<storePageActionType>;
+    dispatch: React.Dispatch<StorePageActionType>;
     PRODUCTS_ACTION_TYPES: typeof PRODUCTS_ACTION_TYPES;
 };
 
 export type UseProductsFetchType = {
-    dispatch: React.Dispatch<storePageActionType>;
+    dispatch: React.Dispatch<StorePageActionType>;
     PRODUCTS_ACTION_TYPES: typeof PRODUCTS_ACTION_TYPES;
 };
 
@@ -57,7 +54,7 @@ export type CartProviderType = {
 };
 
 export type ShoppingCartActionTypes =
-    (typeof SHOPPING_CART_TYPES)[keyof typeof SHOPPING_CART_TYPES];
+    (typeof SHOPPING_CART_REDUCER_ACTIONS)[keyof typeof SHOPPING_CART_REDUCER_ACTIONS];
 
 export type CartItemType = {
     name: string;
@@ -78,11 +75,11 @@ export type CartContextType = {
         cartItems: CartItemType[] | [];
     };
     dispatch: React.Dispatch<Action>;
-    SHOPPING_CART_TYPES: typeof SHOPPING_CART_TYPES;
+    SHOPPING_CART_REDUCERS_ACTIONS: typeof SHOPPING_CART_REDUCER_ACTIONS;
+    grandTotal: number;
 };
-
 export type ShoppingCartListItemProps = {
-    item: CartItemType;
+    cartItem: CartItemType;
     [key: string]: any;
 };
 
@@ -106,4 +103,11 @@ export type NavLinkType = {
     text: string;
     path: string;
     id: number;
+};
+
+export type IStoreListItemType = {
+    product: ProductType;
+    cartQty: number | undefined;
+    dispatch: React.Dispatch<Action>;
+    SHOPPING_CART_REDUCERS_ACTIONS: typeof SHOPPING_CART_REDUCER_ACTIONS;
 };

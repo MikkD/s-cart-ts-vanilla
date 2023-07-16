@@ -1,22 +1,14 @@
-import { useMemo, useContext } from 'react';
-import { ReusableList } from './ReusableList';
-import {
-    CartContextType,
-    ShoppingCartListItemProps,
-    ShoppingCartProps,
-} from '../types/types';
-import { CartContext } from '../context/ShoppingCart';
+import { ReactElement, memo } from 'react';
+import { ShoppingCartListItemProps, ShoppingCartProps } from '../types/types';
+import { useCartContext } from '../hooks/useCartContext';
 
-const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => {
-    const { name, imgUrl, price, cartQty, total } = item;
-
-    const cartContext = useContext<CartContextType | null>(CartContext);
-
-    if (!cartContext) {
-        throw new Error('cartContext is not provided');
-    }
-
-    const { dispatch, SHOPPING_CART_TYPES } = cartContext;
+const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({
+    cartItem,
+    dispatch,
+    SHOPPING_CART_REDUCERS_ACTIONS,
+}) => {
+    const { name, imgUrl, price, cartQty, total } = cartItem;
+    console.log('__ShoppingCartListItem RE-RENDERED__', name);
 
     return (
         <li>
@@ -37,8 +29,8 @@ const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => 
                 <button
                     onClick={() =>
                         dispatch({
-                            type: SHOPPING_CART_TYPES.REMOVE_FROM_CART,
-                            payload: item,
+                            type: SHOPPING_CART_REDUCERS_ACTIONS.REMOVE_FROM_CART,
+                            payload: cartItem,
                         })
                     }>
                     X
@@ -48,21 +40,35 @@ const ShoppingCartListItem: React.FC<ShoppingCartListItemProps> = ({ item }) => 
     );
 };
 
-const ShoppingCart: React.FC<ShoppingCartProps> = ({ isActive, setIsActive }) => {
-    const cartContext = useContext<CartContextType | null>(CartContext);
+const arePropsEqual = (prevProps, nextProps) =>
+    Object.keys(prevProps).every((key) => prevProps[key] === nextProps[key]) &&
+    prevProps.cartItem.cartQty === nextProps.cartItem.cartQty;
 
-    if (!cartContext) {
-        throw new Error('cartContext is not provided');
-    }
+const MemoizedShoppingCartItem = memo(ShoppingCartListItem, arePropsEqual);
 
+export const ShoppingCartList: React.FC = (): ReactElement => {
     const {
         state: { cartItems },
-    } = cartContext;
+        dispatch,
+        SHOPPING_CART_REDUCERS_ACTIONS,
+    } = useCartContext();
 
-    const grandTotal = useMemo(
-        () => cartItems.reduce((acc, { total }) => acc + total, 0),
-        [cartItems]
+    return (
+        <ul>
+            {cartItems?.map((cartItem) => (
+                <MemoizedShoppingCartItem
+                    key={cartItem.id}
+                    cartItem={cartItem}
+                    dispatch={dispatch}
+                    SHOPPING_CART_REDUCERS_ACTIONS={SHOPPING_CART_REDUCERS_ACTIONS}
+                />
+            ))}
+        </ul>
     );
+};
+
+const ShoppingCart: React.FC<ShoppingCartProps> = ({ isActive, setIsActive }) => {
+    const { grandTotal } = useCartContext();
 
     return (
         <div className={`shopping-cart-container ${isActive ? 'active' : ''}`}>
@@ -72,10 +78,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isActive, setIsActive }) =>
             </div>
             <div className='shopping-cart-body'>
                 <div className='cart-list'>
-                    <ReusableList
-                        items={cartItems}
-                        componentToRender={ShoppingCartListItem}
-                    />
+                    <ShoppingCartList />
                 </div>
             </div>
             <div className='cart-footer'>Grand Total : {grandTotal}$</div>

@@ -7,10 +7,9 @@ import { useCartContext } from '../hooks/useCartContext';
 const NavBar: React.FC = () => {
     const [isShoppingCartActive, setIsShoppingCartActive] = useState(false);
 
-    const cartContext = useCartContext();
     const {
         state: { cartItems },
-    } = cartContext;
+    } = useCartContext();
 
     const cartItemsQty = useMemo(
         () => cartItems.reduce((acc, { cartQty }) => acc + cartQty, 0),

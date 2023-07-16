@@ -210,12 +210,14 @@ button:active {
 .store-list-wrapper ul {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .store-list-wrapper li {
     border: 1px solid green;
-    width: 250px;
+    width: 450px;
     margin: 15px 15px 0px 0px;
+    height: 400px;
 }
 
 /* CHANGE TO IMG? */

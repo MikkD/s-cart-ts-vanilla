@@ -1,32 +1,21 @@
-import React from 'react';
-import { ReusableList } from '../components/ReusableList';
-import {
-    CartItemType,
-    IStoreListItemType,
-    ShoppingCartActionTypes,
-} from '../types/types';
+import React, { ReactElement, memo } from 'react';
+import { IStoreListItemType, ShoppingCartActionTypes, ProductType } from '../types/types';
 import { useCartContext } from '../hooks/useCartContext';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useProductsFetch } from '../hooks/useProductsFetch';
-import { url } from '../utils/utils';
 
-const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
-    const { name, imgUrl, price, id } = item;
-
-    const {
-        state: { cartItems },
-        dispatch,
-        SHOPPING_CART_TYPES,
-    } = useCartContext();
-
-    const itemInCart = cartItems.find(
-        (cartItem: CartItemType) => cartItem.id === id && cartItem?.cartQty > 0
-    );
+const StoreListItem: React.FC<IStoreListItemType> = ({
+    product,
+    cartQty,
+    dispatch,
+    SHOPPING_CART_REDUCERS_ACTIONS,
+}): ReactElement => {
+    const { name, imgUrl, price } = product;
 
     const dispatchCartAction = (cartActionType: ShoppingCartActionTypes) => {
         dispatch({
             type: cartActionType,
-            payload: item,
+            payload: product,
         });
     };
     return (
@@ -40,20 +29,22 @@ const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
                     <span>{price}$</span>
                 </div>
                 <div className='store-card-buttons'>
-                    {itemInCart ? (
+                    {cartQty ? (
                         <>
                             <button
                                 onClick={() =>
                                     dispatchCartAction(
-                                        SHOPPING_CART_TYPES.SUBSTRACT_FROM_CART
+                                        SHOPPING_CART_REDUCERS_ACTIONS.SUBSTRACT_FROM_CART
                                     )
                                 }>
                                 -
                             </button>
-                            <span>{itemInCart?.cartQty} in cart</span>
+                            <span>{cartQty} in cart</span>
                             <button
                                 onClick={() =>
-                                    dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)
+                                    dispatchCartAction(
+                                        SHOPPING_CART_REDUCERS_ACTIONS.ADD_TO_CART
+                                    )
                                 }>
                                 +
                             </button>
@@ -61,7 +52,7 @@ const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
                                 <button
                                     onClick={() =>
                                         dispatchCartAction(
-                                            SHOPPING_CART_TYPES.REMOVE_FROM_CART
+                                            SHOPPING_CART_REDUCERS_ACTIONS.REMOVE_FROM_CART
                                         )
                                     }>
                                     Remove Item
@@ -71,7 +62,9 @@ const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
                     ) : (
                         <button
                             onClick={() =>
-                                dispatchCartAction(SHOPPING_CART_TYPES.ADD_TO_CART)
+                                dispatchCartAction(
+                                    SHOPPING_CART_REDUCERS_ACTIONS.ADD_TO_CART
+                                )
                             }>
                             Add to Cart
                         </button>
@@ -82,21 +75,53 @@ const StoreListItem: React.FC<IStoreListItemType> = ({ item }) => {
     );
 };
 
-const Store: React.FC = () => {
+const arePropsEqual = (prevProps, nextProps) =>
+    Object.keys(prevProps).every((key) => prevProps[key] === nextProps[key]) &&
+    prevProps.cartQty === nextProps.cartQty;
+
+const MemoizedStoreListItem = memo(StoreListItem, arePropsEqual);
+
+export const StoreList: React.FC = (): React.ReactNode => {
     const {
         state: { products },
-        dispatch,
-        PRODUCTS_ACTION_TYPES,
     } = useProductsContext();
 
-    useProductsFetch(dispatch, PRODUCTS_ACTION_TYPES, url);
+    const {
+        state: { cartItems },
+        dispatch,
+        SHOPPING_CART_REDUCERS_ACTIONS,
+    } = useCartContext();
+
+    return (
+        <ul>
+            {products.map((product) => {
+                const cartItem = cartItems.find((cartItem) => cartItem.id === product.id);
+                const cartQty = cartItem ? cartItem.cartQty : 0;
+
+                return (
+                    <MemoizedStoreListItem
+                        key={product.id}
+                        product={product}
+                        cartQty={cartQty}
+                        dispatch={dispatch}
+                        SHOPPING_CART_REDUCERS_ACTIONS={SHOPPING_CART_REDUCERS_ACTIONS}
+                    />
+                );
+            })}
+            ;
+        </ul>
+    );
+};
+
+const Store: React.FC = () => {
+    useProductsFetch();
 
     return (
         <>
             <div className='page-header'>Store</div>
             <div className='store-container'>
                 <div className='store-list-wrapper'>
-                    <ReusableList items={products} componentToRender={StoreListItem} />
+                    <StoreList />
                 </div>
             </div>
         </>
