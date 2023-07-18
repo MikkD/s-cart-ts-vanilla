@@ -1,8 +1,9 @@
 import React, { ReactElement, memo } from 'react';
-import { IStoreListItemType, ShoppingCartActionTypes, ProductType } from '../types/types';
+import { IStoreListItemType, ShoppingCartActionTypes } from '../types/types';
 import { useCartContext } from '../hooks/useCartContext';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useProductsFetch } from '../hooks/useProductsFetch';
+import { LazyImage } from '../components/LazyImage';
 
 const StoreListItem: React.FC<IStoreListItemType> = ({
     product,
@@ -10,7 +11,7 @@ const StoreListItem: React.FC<IStoreListItemType> = ({
     dispatch,
     SHOPPING_CART_REDUCERS_ACTIONS,
 }): ReactElement => {
-    const { name, imgUrl, price } = product;
+    const { name, imgUrl, price, id } = product;
 
     const dispatchCartAction = (cartActionType: ShoppingCartActionTypes) => {
         dispatch({
@@ -22,7 +23,7 @@ const StoreListItem: React.FC<IStoreListItemType> = ({
         <li>
             <div className='store-card'>
                 <div className='store-card-img'>
-                    <img src={imgUrl} alt={name} />
+                    <LazyImage key={id} src={imgUrl} name={name} id={id} />
                 </div>
                 <div className='store-card-body'>
                     <span>{name.toUpperCase()}</span>

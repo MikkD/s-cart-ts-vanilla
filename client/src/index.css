@@ -215,9 +215,10 @@ button:active {
 
 .store-list-wrapper li {
     border: 1px solid green;
-    width: 450px;
+    /* width: 450px; */
+    width: 900px;
     margin: 15px 15px 0px 0px;
-    height: 400px;
+    height: 600px;
 }
 
 /* CHANGE TO IMG? */
