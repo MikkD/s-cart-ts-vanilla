@@ -4,6 +4,8 @@ import { useCartContext } from '../hooks/useCartContext';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useProductsFetch } from '../hooks/useProductsFetch';
 import { LazyImage } from '../components/LazyImage';
+import PageHeader from '../components/PageHeader';
+import { Filters } from '../components/Filters';
 
 const StoreListItem: React.FC<IStoreListItemType> = ({
     product,
@@ -82,6 +84,7 @@ const arePropsEqual = (prevProps, nextProps) =>
 
 const MemoizedStoreListItem = memo(StoreListItem, arePropsEqual);
 
+// STORE_LIST
 export const StoreList: React.FC = (): React.ReactNode => {
     const {
         state: { products },
@@ -119,8 +122,9 @@ const Store: React.FC = () => {
 
     return (
         <>
-            <div className='page-header'>Store</div>
+            <PageHeader />
             <div className='store-container'>
+                <Filters />
                 <div className='store-list-wrapper'>
                     <StoreList />
                 </div>

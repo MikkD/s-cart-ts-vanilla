@@ -40,6 +40,7 @@ ul,
 ol {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 button {
@@ -135,6 +136,10 @@ button:active {
     font-size: 12px;
 }
 
+/* PAGE_HEADER */
+.page-header {
+    padding: 10px;
+}
 /* SHOPPING_CART */
 .shopping-cart-container {
     border: 1px solid red;
@@ -216,12 +221,11 @@ button:active {
 .store-list-wrapper li {
     border: 1px solid green;
     /* width: 450px; */
-    width: 900px;
+    width: 800px;
     margin: 15px 15px 0px 0px;
     height: 600px;
 }
 
-/* CHANGE TO IMG? */
 img {
     object-fit: cover;
     height: 100%;
@@ -244,6 +248,49 @@ img {
     :is(button) {
         margin: 10px 5px;
     }
+}
+
+/* FILTERS */
+.store-filters {
+    border: 1px solid red;
+    display: flex;
+    cursor: pointer;
+}
+.filters {
+    padding: 10px 15px;
+    border: 1px solid rgb(229, 228, 226);
+    min-width: 180px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+.active-filter-name {
+    font-weight: bold;
+}
+.dropdown-icon {
+    transition: all 0.3s;
+}
+.dropdown-icon.active {
+    transform: rotate(180deg);
+}
+.active-filter-options {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    border: 1px solid rgb(229, 228, 226);
+    width: 100%;
+}
+.active-filter-options li:hover {
+    /* border: 1px solid black; */
+    background-color: #dfdfdf;
+}
+.active-filter-options li {
+    padding: 10px 15px;
+}
+.active-filter-options li.selected {
+    background-color: #f2f2f2;
 }
 
 /* MEDIA QUERIES */

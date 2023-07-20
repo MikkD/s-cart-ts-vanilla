@@ -10,6 +10,7 @@ export const PRODUCTS_ACTION_TYPES = {
     LOADING: 'LOADING',
     SUCCESS: 'SUCCESS',
     ERROR: 'ERROR',
+    FILTER_BY: 'FILTER_BY',
 } as const;
 
 // STORE
@@ -30,7 +31,7 @@ export type StoreProductstActionTypes =
 
 export type StorePageActionType = {
     type: StoreProductstActionTypes;
-    payload?: ProductType[] | boolean | object;
+    payload?: ProductType[] | boolean | object | string;
 };
 
 export type ProductsContextType = {

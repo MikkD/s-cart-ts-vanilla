@@ -18,6 +18,19 @@ type storeReducerType = {
     isError: boolean;
 };
 
+const filterProducts = (products: ProductType[], filterType: string) => {
+    switch (filterType) {
+        case 'FEAT':
+            return [...products].sort((a, b) => a.name.localeCompare(b.name));
+        case 'ASC':
+            return [...products].sort((a, b) => a.price - b.price);
+        case 'DESC':
+            return [...products].sort((a, b) => b.price - a.price);
+        default:
+            return products;
+    }
+};
+
 const storePage = (state: storeReducerType, action: StorePageActionType) => {
     switch (action.type) {
         case PRODUCTS_ACTION_TYPES.LOADING:
@@ -36,6 +49,11 @@ const storePage = (state: storeReducerType, action: StorePageActionType) => {
                 ...state,
                 isError: true,
                 isLoading: false,
+            };
+        case PRODUCTS_ACTION_TYPES.FILTER_BY:
+            return {
+                ...state,
+                products: filterProducts(state.products, action.payload as string),
             };
         default:
             return state;

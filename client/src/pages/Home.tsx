@@ -1,5 +1,9 @@
-import React from 'react';
+import PageHeader from '../components/PageHeader';
 
 export default function Home() {
-    return <div>Home</div>;
+    return (
+        <div>
+            <PageHeader />
+        </div>
+    );
 }
