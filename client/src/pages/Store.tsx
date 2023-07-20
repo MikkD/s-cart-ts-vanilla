@@ -1,5 +1,9 @@
-import React, { ReactElement, memo } from 'react';
-import { IStoreListItemType, ShoppingCartActionTypes } from '../types/types';
+import React, { ReactElement, memo, useState, useMemo } from 'react';
+import {
+    IStoreListItemType,
+    ShoppingCartActionTypes,
+    PRODUCTS_ACTION_TYPES,
+} from '../types/types';
 import { useCartContext } from '../hooks/useCartContext';
 import { useProductsContext } from '../hooks/useProductsContext';
 import { useProductsFetch } from '../hooks/useProductsFetch';
@@ -87,7 +91,7 @@ const MemoizedStoreListItem = memo(StoreListItem, arePropsEqual);
 // STORE_LIST
 export const StoreList: React.FC = (): React.ReactNode => {
     const {
-        state: { products },
+        state: { products, itemQtyPerPage, currentPage },
     } = useProductsContext();
 
     const {
@@ -96,9 +100,16 @@ export const StoreList: React.FC = (): React.ReactNode => {
         SHOPPING_CART_REDUCERS_ACTIONS,
     } = useCartContext();
 
+    const indexOfLastItem = currentPage * itemQtyPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemQtyPerPage;
+    const currentProducts = useMemo(
+        () => products.slice(indexOfFirstItem, indexOfLastItem),
+        [indexOfFirstItem, indexOfLastItem, products]
+    );
+
     return (
         <ul>
-            {products.map((product) => {
+            {currentProducts.map((product) => {
                 const cartItem = cartItems.find((cartItem) => cartItem.id === product.id);
                 const cartQty = cartItem ? cartItem.cartQty : 0;
 
@@ -112,8 +123,39 @@ export const StoreList: React.FC = (): React.ReactNode => {
                     />
                 );
             })}
-            ;
         </ul>
+    );
+};
+// PAGINATION
+const StorePagination = () => {
+    const {
+        state: { products, itemQtyPerPage, currentPage },
+        dispatch,
+    } = useProductsContext();
+    const totalNumOfItems = products.length;
+    const itemsPerPage = itemQtyPerPage || 10;
+    const numberOfPages = Math.round(totalNumOfItems / itemsPerPage);
+
+    return (
+        <div className='store-pagination'>
+            <div className='pagination-btns'>
+                {[...Array(numberOfPages).keys()].map((pageNum) => {
+                    return (
+                        <button
+                            className={pageNum + 1 === currentPage ? 'bg-active' : ''}
+                            onClick={() =>
+                                dispatch({
+                                    type: PRODUCTS_ACTION_TYPES.SET_CURRENT_PAGE,
+                                    payload: pageNum + 1,
+                                })
+                            }
+                            key={pageNum}>
+                            {pageNum + 1}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
     );
 };
 
@@ -128,6 +170,7 @@ const Store: React.FC = () => {
                 <div className='store-list-wrapper'>
                     <StoreList />
                 </div>
+                <StorePagination />
             </div>
         </>
     );

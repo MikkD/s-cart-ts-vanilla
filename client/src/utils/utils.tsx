@@ -25,7 +25,7 @@ export const ShoppingCartIcon = () => (
     </svg>
 );
 
-export const filterOptions = [
+export const SortByFilterOptions = [
     {
         name: 'Featured',
         value: 'FEAT',
@@ -39,3 +39,20 @@ export const filterOptions = [
         value: 'DESC',
     },
 ];
+
+export const PaginationFilterOptions = [
+    {
+        name: 'Show 10',
+        value: '10',
+    },
+    {
+        name: 'Show 20',
+        value: '20',
+    },
+    {
+        name: 'Show All',
+        value: '100',
+    },
+];
+
+export const DEFAULT_NUMBER_OF_ITEMS_PER_PAGE = 10;

@@ -5,11 +5,14 @@ import {
     PRODUCTS_ACTION_TYPES,
     ProductsContextType,
 } from '../types/types';
+import { DEFAULT_NUMBER_OF_ITEMS_PER_PAGE } from '../utils/utils';
 
 const INITIAL_STATE = {
     products: [],
     isLoading: false,
     isError: false,
+    itemQtyPerPage: DEFAULT_NUMBER_OF_ITEMS_PER_PAGE,
+    currentPage: 1,
 };
 
 type storeReducerType = {
@@ -54,6 +57,16 @@ const storePage = (state: storeReducerType, action: StorePageActionType) => {
             return {
                 ...state,
                 products: filterProducts(state.products, action.payload as string),
+            };
+        case PRODUCTS_ACTION_TYPES.SET_NUMBER_OF_ITEMS_PER_PAGE:
+            return {
+                ...state,
+                itemQtyPerPage: action.payload,
+            };
+        case PRODUCTS_ACTION_TYPES.SET_CURRENT_PAGE:
+            return {
+                ...state,
+                currentPage: action.payload,
             };
         default:
             return state;

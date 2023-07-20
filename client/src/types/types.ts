@@ -11,6 +11,8 @@ export const PRODUCTS_ACTION_TYPES = {
     SUCCESS: 'SUCCESS',
     ERROR: 'ERROR',
     FILTER_BY: 'FILTER_BY',
+    SET_NUMBER_OF_ITEMS_PER_PAGE: 'SET_NUMBER_OF_ITEMS_PER_PAGE',
+    SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
 } as const;
 
 // STORE
@@ -31,7 +33,7 @@ export type StoreProductstActionTypes =
 
 export type StorePageActionType = {
     type: StoreProductstActionTypes;
-    payload?: ProductType[] | boolean | object | string;
+    payload?: ProductType[] | boolean | object | string | number;
 };
 
 export type ProductsContextType = {
@@ -39,6 +41,8 @@ export type ProductsContextType = {
         products: ProductType[];
         isLoading: boolean;
         isError: boolean;
+        itemQtyPerPage: number;
+        currentPage: number;
     };
     dispatch: React.Dispatch<StorePageActionType>;
     PRODUCTS_ACTION_TYPES: typeof PRODUCTS_ACTION_TYPES;
